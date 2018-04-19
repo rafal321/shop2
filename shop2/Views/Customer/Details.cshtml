@@ -36,6 +36,37 @@
 
     </dl>
 </div>
+@* --------------------Raf-------------------- *@
+<div class="row">
+    <div class="col-sm-6">
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.Orders)
+        </dt>
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                </tr>
+                @foreach (var item in Model.Orders)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Pname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Qty)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+    </div>
+</div>
+@*----------------------------------------------*@
+
+<hr />
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.CustomerID }) |
     @Html.ActionLink("Back to List", "Index")
