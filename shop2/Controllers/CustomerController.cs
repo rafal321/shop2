@@ -84,7 +84,7 @@ namespace shop2.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CustomerID,CName,CAddress,Phone")] Customer customer)
+        public ActionResult Edit([Bind(Include = "CName,CAddress,Phone")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -95,13 +95,25 @@ namespace shop2.Controllers
             return View(customer);
         }
 
+        //This parameter is false when the HttpGet Delete method is called without a 
+        //previous failure.When it is called by the HttpPost Delete method in response to
+        //a database update error, the parameter is true and an error message is passed to the view.
+
+
         // GET: Customer/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //raf: Updating the Delete Page
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
+            }
+            //---------------------
+
             Customer customer = db.Customers.Find(id);
             if (customer == null)
             {
@@ -115,9 +127,16 @@ namespace shop2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            db.Customers.Remove(customer);
-            db.SaveChanges();
+            try
+            {           //raf: delete operation catches any database update errors
+                Customer customer = db.Customers.Find(id);
+                db.Customers.Remove(customer);
+                db.SaveChanges();
+            }
+            catch (DataException)
+            {
+                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+            }
             return RedirectToAction("Index");
         }
 
@@ -128,6 +147,7 @@ namespace shop2.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+                        //Closing Database Connections
         }
     }
 }
