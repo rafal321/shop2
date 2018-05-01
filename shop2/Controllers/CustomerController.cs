@@ -110,7 +110,7 @@ namespace shop2.Controllers
             //raf: Updating the Delete Page
             if (saveChangesError.GetValueOrDefault())
             {
-                ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
+                ViewBag.ErrorMessage = "Delete failed. Try again and if the problem persists see your system administrator.";
             }
             //---------------------
 
