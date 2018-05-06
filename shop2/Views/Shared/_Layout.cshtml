@@ -6,17 +6,34 @@
     <title>@ViewBag.Title - The Shop Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    @*-------New Fonts--------------------------------------*@
+    <link href="https://fonts.googleapis.com/css?family=Contrail+One|Lobster|Prosto+One|Varela+Round" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("https://s3-eu-west-1.amazonaws.com/glowcloud.xyz/img/bImage.jpg");
+            background-repeat: repeat;
+            font-family: 'Varela Round', sans-serif;
+        }
+        div.rka {
+            font-family: 'Contrail One', cursive;
+        }
+
+    </style>
+    @*---------------------------------------------*@
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top"  style="background-color:darkgreen;">
         <div class="container">
-            <div class="navbar-header">
+            <div class="navbar-header" >
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("The Shop Application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <div class="rka">
+                    @Html.ActionLink("The Shop Application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -34,7 +51,11 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - The Shop Application</p>
+            <p style="font-family: 'Lobster', cursive;">
+                &copy; @DateTime.Now.Year - The Shop Application<br />
+                Aline da Silva - Niall McClelland - Rafal Kita
+            </p>
+
         </footer>
     </div>
 
