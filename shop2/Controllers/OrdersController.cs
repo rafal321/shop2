@@ -15,9 +15,33 @@ namespace shop2.Controllers
         private shopdbEntities db = new shopdbEntities();
 
         // GET: Orders
-        public ActionResult Index()
+      
+    public ActionResult Index(string sortOrder, string searchString)
         {
-            var orders = db.Orders.Include(o => o.Customer).Include(o => o.Product);
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "qty_desc" : "";
+            ViewBag.AddressSortParm = sortOrder == "Qty" ? "qty_desc" : "Qty";
+
+            var orders = from c in db.Orders
+                            select c;
+            ////====searchinf stuff
+            //// int result = int.parseInt(searchString);
+            //int value;
+
+            //int xxx = int.Parse(searchString);
+            //if (!String.IsNullOrEmpty(searchString))
+            //{
+            //    orders = orders.Where(c => c.Qty == xxx);
+            //}
+            //===================
+            switch (sortOrder)
+            {
+                case "qty_desc":
+                    orders = orders.OrderByDescending(x => x.Qty);
+                   break;             
+                default:
+                    orders = orders.OrderBy(y => y.Qty);
+                    break;
+            }
             return View(orders.ToList());
         }
 
@@ -51,13 +75,19 @@ namespace shop2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "OrderID,ProductID,CustomerID,Qty")] Order order)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Orders.Add(order);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Orders.Add(order);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-
+            catch
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }            
             ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CName", order.CustomerID);
             ViewBag.ProductID = new SelectList(db.Products, "ProductID", "Pname", order.ProductID);
             return View(order);

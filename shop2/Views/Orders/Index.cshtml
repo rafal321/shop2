@@ -7,39 +7,55 @@
 <h2>Orders Section</h2>
 <p>
     @Html.ActionLink("Create New", "Create")
-</p>
+    @*=== Searching Stuff=========*@
+    @*@using (Html.BeginForm())
+    {
+    <p>
+        Find by Name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+    }*@
+    @*=== Searching Stuff=========*@
+
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Qty)
+           @* @Html.DisplayNameFor(model => model.Qty) Old Code*@
+        
+            @Html.ActionLink("Quantity", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Customer.CName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Product.Pname)
-        </th>
-        <th></th>
-    </tr>
+        <th>         
+            
+          @*  @Html.DisplayNameFor(model => model.Customer.CName) Old Code*@
+                @Html.ActionLink("Customer Name", "Index", new { sortOrder = ViewBag.NameSortParm })
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Qty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.CName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Pname)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.OrderID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.OrderID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.OrderID })
-            </td>
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.Product.Pname) *@
+                @Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Pname)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.OrderID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.OrderID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.OrderID })
+                </td>
+            </tr>
+        }
+
+    </table>
