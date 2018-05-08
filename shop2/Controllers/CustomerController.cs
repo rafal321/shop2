@@ -15,11 +15,38 @@ namespace shop2.Controllers
         private shopdbEntities db = new shopdbEntities();
 
         // GET: Customer
-        public ActionResult Index()
+        //public ActionResult Index() //method before sorting implemented
+        //{
+        //    return View(db.Customers.ToList());
+        //}
+        //======sorting filtering======================================
+        public ActionResult Index(string sortOrder)
         {
-            return View(db.Customers.ToList());
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.AddressSortParm = sortOrder == "Address" ? "address_desc" : "Address";
+
+            var customers = from c in db.Customers
+                            select c;
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    customers = customers.OrderByDescending(x => x.CName);
+                    break;
+                case "Address":
+                    customers = customers.OrderBy(s => s.CAddress);
+                    break;
+                case "address_desc":
+                    customers = customers.OrderByDescending(s => s.CAddress);
+                    break;
+                default:
+                    customers = customers.OrderBy(y => y.CName);
+                    break;
+            }
+            return View(customers.ToList());
         }
 
+        //==============================================
         // GET: Customer/Details/5
         public ActionResult Details(int? id)
         {
