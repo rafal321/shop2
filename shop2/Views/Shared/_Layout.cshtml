@@ -42,6 +42,16 @@
             background: linear-gradient(to bottom, rgba(182,22,147,1) 0%, rgba(157,21,121,1) 50%, rgba(112,0,79,1) 51%, rgba(189,0,126,1) 100%);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b61693', endColorstr='#bd007e', GradientType=0 );
         }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: rgba(010,010,255,0.1);
+            color: brown;
+            text-align: center;
+        }
+
     </style>
     @*---------------------------------------------*@
 </head>
@@ -73,13 +83,12 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
+        <div class="footer">
             <p style="font-family: 'Lobster', cursive;">
-                &copy; @DateTime.Now.Year - The Shop Application<br />
-                Aline da Silva - Niall McClelland - Rafal Kita
+                &copy; @DateTime.Now.Year - The Shop Application &nbsp;&nbsp;&nbsp;&nbsp;&#10045; Aline da Silva &#10045; Niall McClelland &#10045; Rafal Kita &nbsp;&nbsp;&nbsp;&nbsp;&#9731;
             </p>
 
-        </footer>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

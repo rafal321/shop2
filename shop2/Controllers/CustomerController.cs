@@ -15,19 +15,24 @@ namespace shop2.Controllers
         private shopdbEntities db = new shopdbEntities();
 
         // GET: Customer
-        //public ActionResult Index() //method before sorting implemented
+        //public ActionResult Index() //method before sorting/filtering implemented
         //{
         //    return View(db.Customers.ToList());
         //}
         //======sorting filtering======================================
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string searchString)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.AddressSortParm = sortOrder == "Address" ? "address_desc" : "Address";
 
             var customers = from c in db.Customers
                             select c;
-
+            //====searchinf stuff
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                customers = customers.Where(c => c.CName.Contains(searchString));
+            }
+            //===================
             switch (sortOrder)
             {
                 case "name_desc":
