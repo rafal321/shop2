@@ -19,7 +19,7 @@ namespace shop2.Controllers
             //return db.Customers.ToList().OrderByDescending(x => x.CName);
             return "xxx";
         }
-
+        //lll
         // GET: api/CustomerAPI/5
         public string Get(int id)
         {
