@@ -14,12 +14,13 @@ namespace shop2.Controllers
         private shopdbEntities db = new shopdbEntities();
 
         // GET: api/CustomerAPI
-        public string Get()
+        public List<Customer> Get()
         {
-            //return db.Customers.ToList().OrderByDescending(x => x.CName);
-            return "xxx";
+            db.Configuration.ProxyCreationEnabled = false;
+            return db.Customers.OrderByDescending(x => x.CName).ToList();
+            //return "xxx";
         }
-        //lll
+
         // GET: api/CustomerAPI/5
         public string Get(int id)
         {
