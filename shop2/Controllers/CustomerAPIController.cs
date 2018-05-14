@@ -21,7 +21,7 @@ namespace shop2.Controllers
             //return "xxx";
         }
 
-        // GET: api/CustomerAPI/5
+        //GET: api/CustomerAPI/5
         //public string Get(int id)
         //{
         //    return "value";

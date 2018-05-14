@@ -181,7 +181,7 @@ namespace shop2.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-            //Closing Database Connections
+            //Closing Database Connectionsa
         }
     }
 }

@@ -11,8 +11,7 @@ namespace shop2.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
+    
     public partial class Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,7 +21,6 @@ namespace shop2.Models
         }
     
         public int ProductID { get; set; }
-        [DisplayName("Name")]
         public string Pname { get; set; }
         public Nullable<decimal> Price { get; set; }
     
