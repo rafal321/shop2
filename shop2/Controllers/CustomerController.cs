@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 using shop2.Models;
 
@@ -13,6 +14,7 @@ namespace shop2.Controllers
     public class CustomerController : Controller
     {
         private shopdbEntities db = new shopdbEntities();
+
 
         // GET: Customer
         //public ActionResult Index() //method before sorting/filtering implemented
@@ -89,7 +91,7 @@ namespace shop2.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch (DataException)       
+            catch (DataException)
             {
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
@@ -179,7 +181,7 @@ namespace shop2.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-                        //Closing Database Connections
+            //Closing Database Connections
         }
     }
 }
