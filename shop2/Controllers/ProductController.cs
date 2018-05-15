@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using shop2.Models;
+using PagedList;
 
 namespace shop2.Controllers
 {
@@ -21,10 +22,22 @@ namespace shop2.Controllers
         //}
         //======sorting filtering======================================
       
-        public ActionResult Index(string sortOrder, string searchString)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.AddressSortParm = sortOrder == "Price" ? "price_desc" : "Price";
+
+
+            if(searchString !=null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
 
             var products = from c in db.Products
                             select c;
@@ -49,7 +62,10 @@ namespace shop2.Controllers
                     products = products.OrderBy(y => y.Pname);
                     break;
             }
-            return View(products.ToList());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(products.ToPagedList(pageNumber, pageSize));
+           // return View(products.ToList());
         }
 
 
