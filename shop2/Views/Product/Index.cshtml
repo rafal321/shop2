@@ -1,7 +1,9 @@
-﻿@model IEnumerable<shop2.Models.Product>
+﻿@model PagedList.IPagedList<shop2.Models.Product>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Products";
 }
 
 <h2>Products Section</h2>
@@ -9,10 +11,10 @@
     @Html.ActionLink("Create New", "Create")
     
     @*=== Searching Stuff=========*@
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Index", "Product", FormMethod.Get))
     {
     <p>
-        Find by Name: @Html.TextBox("SearchString")
+        Find by Name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
         <input type="submit" value="Search" />
     </p>
     }
@@ -22,11 +24,11 @@
     <tr>
         <th>
               @*@Html.DisplayNameFor(model => model.Pname) Old Code*@
-              @Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+              @Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentfilter = ViewBag.CurrentFilter })
             </th>
             <th>
                @* @Html.DisplayNameFor(model => model.Price) Old Code*@
-               @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.AddressSortParm })
+               @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.AddressSortParm, currentfilter = ViewBag.CurrentFilter })
             </th>
             <th></th>
         </tr>
@@ -49,3 +51,9 @@
         }
 
     </table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+

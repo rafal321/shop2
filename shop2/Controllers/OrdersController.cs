@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using shop2.Models;
+using PagedList;
 
 namespace shop2.Controllers
 {
@@ -16,10 +17,21 @@ namespace shop2.Controllers
 
         // GET: Orders
       
-    public ActionResult Index(string sortOrder, string searchString)
+    public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "qty_desc" : "";
             ViewBag.AddressSortParm = sortOrder == "Qty" ? "qty_desc" : "Qty";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
 
             var orders = from c in db.Orders
                             select c;
@@ -42,7 +54,10 @@ namespace shop2.Controllers
                     orders = orders.OrderBy(y => y.Qty);
                     break;
             }
-            return View(orders.ToList());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(orders.ToPagedList(pageNumber, pageSize));
+            //return View(orders.ToList());
         }
 
         // GET: Orders/Details/5
