@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 using shop2.Models;
+using PagedList;
 
 namespace shop2.Controllers
 {
@@ -22,10 +23,22 @@ namespace shop2.Controllers
         //    return View(db.Customers.ToList());
         //}
         //======sorting filtering======================================
-        public ActionResult Index(string sortOrder, string searchString)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.AddressSortParm = sortOrder == "Address" ? "address_desc" : "Address";
+            //ViewBag.PhoneSortParm = sortOrder == "Phone" ? "phone_desc" : "Phone";
+
+            if (searchString!=null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
 
             var customers = from c in db.Customers
                             select c;
@@ -46,11 +59,19 @@ namespace shop2.Controllers
                 case "address_desc":
                     customers = customers.OrderByDescending(s => s.CAddress);
                     break;
+                //case "Phone":
+                //    customers = customers.OrderBy(s => s.Phone);
+                //    break;
+                //case "phone_desc":
+                //    customers = customers.OrderByDescending(s => s.Phone);
+                //    break;
                 default:
                     customers = customers.OrderBy(y => y.CName);
                     break;
             }
-            return View(customers.ToList());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(customers.ToPagedList(pageNumber, pageSize));
         }
 
         //==============================================
