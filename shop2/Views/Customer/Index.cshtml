@@ -6,7 +6,6 @@
     ViewBag.Title = "Customers";
 }
 
-
     <h2>Customers Section</h2>
 
     <p>
@@ -33,7 +32,7 @@
         <th>
             Name
         </th>
-<th>
+        <th>
             @*@Html.DisplayNameFor(model => model.CAddress) =====Old Code*@
             @Html.ActionLink("Address", "Index", new { sortOrder = ViewBag.AddressSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
