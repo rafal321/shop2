@@ -9,6 +9,7 @@ using System.Web.Http.Results;
 using System.Web.Mvc;
 using shop2.Models;
 using PagedList;
+using System.Data.SqlClient;
 
 namespace shop2.Controllers
 {
@@ -146,7 +147,7 @@ namespace shop2.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CName,CAddress,Phone")] Customer customer)
+        public ActionResult Edit([Bind(Include = "CustomerID,CName,CAddress,Phone")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -155,7 +156,9 @@ namespace shop2.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+          
             return View(customer);
+           
         }
 
         //This parameter is false when the HttpGet Delete method is called without a 
