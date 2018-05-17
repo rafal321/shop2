@@ -9,7 +9,7 @@ using System.Web.Http.Results;
 using System.Web.Mvc;
 using shop2.Models;
 using PagedList;
-using System.Data.SqlClient;
+
 
 namespace shop2.Controllers
 {
