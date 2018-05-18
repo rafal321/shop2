@@ -15,15 +15,8 @@ namespace shop2.Controllers
 {
     public class CustomerController : Controller
     {
-        //private shopdbEntities db = new shopdbEntities();
-        private ICustomersContext db = new CustomersContext();
+        private shopdbEntities db = new shopdbEntities();
 
-        public CustomerController() { }
-
-        public CustomerController(ICustomersContext context)
-        {
-            db = context;
-        }
 
         // GET: Customer
         //public ActionResult Index() //method before sorting/filtering implemented
@@ -151,8 +144,7 @@ namespace shop2.Controllers
         {
             if (ModelState.IsValid)
             {
-                //db.Entry(customer).State = EntityState.Modified;
-                db.MarkAsModified(customer);
+                db.Entry(customer).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -162,7 +154,7 @@ namespace shop2.Controllers
         }
 
         //This parameter is false when the HttpGet Delete method is called without a 
-        //previous failure.When it is called by the HttpPost Delete method in response toentry
+        //previous failure.When it is called by the HttpPost Delete method in response to
         //a database update error, the parameter is true and an error message is passed to the view.
 
 
