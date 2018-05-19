@@ -16,7 +16,7 @@ namespace shop2.Controllers
     public class CustomerController : Controller
     {
         //private shopdbEntities db = new shopdbEntities();
-        private ICustomersContext db = new CustomersContext();
+        public ICustomersContext db = new CustomersContext();
 
         public CustomerController() { }
 
@@ -24,6 +24,7 @@ namespace shop2.Controllers
         {
             db = context;
         }
+
 
         // GET: Customer
         //public ActionResult Index() //method before sorting/filtering implemented

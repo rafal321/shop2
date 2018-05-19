@@ -2,11 +2,13 @@
 using shop2.Controllers;
 using shop2.Models;
 using System.Web.Mvc;
+using System;
+using System.Collections.Generic;
 
 namespace shop2Tests2
 {
     [TestClass]
-    class TestCustomerController
+    public class TestCustomerController
     {
         [TestMethod()]
 
@@ -15,56 +17,53 @@ namespace shop2Tests2
             TestCustomersContext tbc = new TestCustomersContext();
             CustomerController controller = new CustomerController(tbc);
             Customer customerToCreate = new Customer() { CustomerID = 13, CName = "Bob", CAddress = "Tallaght", Phone = "four" };
-            // Act
-
+         
             var result = controller.Create(customerToCreate) as RedirectToRouteResult;
-
-            // Assert
 
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
         }
+        //[TestMethod()]
 
+        //public void GetDetailsTest()
+        //{
+        //    TestCustomersContext tbc = new TestCustomersContext();
+        //    CustomerController controller = new CustomerController(tbc);
+        //    Customer GetDetails = Customer (1);
+
+        //    var result = controller.Index(customerToCreate) as RedirectToRouteResult;
+
+        //    Assert.AreEqual("Index", result.RouteValues["action"]);
 
        [TestMethod()]
 
-        public void IndexTestNameLike()
+        public void IndexTestSpecficWord()
 
         {
 
-        //    //Arrange
+       TestCustomersContext a = new TestCustomersContext();
 
-        //    TestCustomersContext tbc = new TestCustomersContext();
+        CustomerController controller = new CustomerController(a);
 
-        //    CustomerController controller = new CustomerController(tbc);
+        Customer Customer1 = new Customer() { CName = "Bob", CAddress = "Dublin", Phone = "two" };
 
-        //    Customer Carol = new MeetingRoom() { Name = "Chat Room", Size = 4, Location = "Ground Floor" };
+        a.Customers.Add(Customer1);
 
-        //    MeetingRoom room2 = new MeetingRoom() { Name = "Board Room", Size = 8, Location = "First Floor" };
+       ViewResult result = controller.Index("Dublin") as ViewResult;
 
-        //    tbc.MeetingRooms.Add(room1);
+        var customers = (List<Customer>)result.ViewData.Model;
 
-        //    tbc.MeetingRooms.Add(room2);
+            foreach (var r in customers) 
 
-        //    // Act
+        {
 
-        //    ViewResult result = controller.Index("", "hat") as ViewResult;
+       StringAssert.Contains(r.CAddress, "Dublin");
 
-        //    // Assert
+        }
 
-        //    var rooms = (List<MeetingRoom>)result.ViewData.Model;
+        Assert.AreEqual(1, customers.Count);
 
-        //    foreach (var r in rooms)
-
-        //    {
-
-        //        StringAssert.Contains(r.Name, "hat");
-
-        //    }
-
-        //    Assert.AreEqual(1, rooms.Count);
-
-        //}
+        }
 
         //[TestMethod()]
         //public void IndexTest()
@@ -85,5 +84,7 @@ namespace shop2Tests2
         //    Assert.IsNotNull(result);
     }
 
-    }
 }
+
+
+
