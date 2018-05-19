@@ -27,5 +27,11 @@ namespace shop2.Controllers
 
             return View();
         }
+        public ActionResult Team()
+        {
+            ViewBag.Message = "This is a page about our Shop.";
+
+            return View();
+        }
     }
 }
