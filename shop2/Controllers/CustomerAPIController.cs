@@ -18,7 +18,7 @@ namespace shop2.Controllers
         {
             db.Configuration.ProxyCreationEnabled = false;
             return db.Customers.OrderByDescending(x => x.CName).ToList();
-            
+            //return "xxx";
         }
 
         // GET: api/CustomerAPI/5
