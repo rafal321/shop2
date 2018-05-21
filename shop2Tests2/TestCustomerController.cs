@@ -10,81 +10,76 @@ namespace shop2Tests2
     [TestClass]
     public class TestCustomerController
     {
+
         [TestMethod()]
 
         public void CreateCustomerTest()
         {
-            TestCustomersContext tbc = new TestCustomersContext();
-            CustomerController controller = new CustomerController(tbc);
+            TestCustomersContext C = new TestCustomersContext();
+            CustomerController controller = new CustomerController(C);
             Customer customerToCreate = new Customer() { CustomerID = 13, CName = "Bob", CAddress = "Tallaght", Phone = "four" };
-         
+
             var result = controller.Create(customerToCreate) as RedirectToRouteResult;
 
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
         }
-        //[TestMethod()]
 
-        //public void GetDetailsTest()
-        //{
-        //    TestCustomersContext tbc = new TestCustomersContext();
-        //    CustomerController controller = new CustomerController(tbc);
-        //    Customer GetDetails = Customer (1);
-
-        //    var result = controller.Index(customerToCreate) as RedirectToRouteResult;
-
-        //    Assert.AreEqual("Index", result.RouteValues["action"]);
-
-       [TestMethod()]
+        [TestMethod()]
 
         public void IndexTestSpecficWord()
 
         {
 
-       TestCustomersContext a = new TestCustomersContext();
+            TestCustomersContext c = new TestCustomersContext();
 
-        CustomerController controller = new CustomerController(a);
+            CustomerController controller = new CustomerController(c);
 
-        Customer Customer1 = new Customer() { CName = "Bob", CAddress = "Dublin", Phone = "two" };
+            Customer Customer1 = new Customer() { CName = "Bob", CAddress = "Dublin", };
 
-        a.Customers.Add(Customer1);
+            c.Customers.Add(Customer1);
 
-       ViewResult result = controller.Index("Dublin") as ViewResult;
+            ViewResult result = controller.Index("", "Dublin") as ViewResult;
 
-        var customers = (List<Customer>)result.ViewData.Model;
+            var customers = (List<Customer>)result.ViewData.Model;
 
-            foreach (var r in customers) 
+            foreach (var r in customers)
+
+            {
+
+                StringAssert.Contains(r.CAddress, "Dublin");
+
+            }
+
+            Assert.AreEqual(1, customers.Count);
+
+        }
+        [TestMethod()]
+
+
+        public void DetailsTest()
 
         {
+            TestCustomersContext c = new TestCustomersContext();
 
-       StringAssert.Contains(r.CAddress, "Dublin");
+            CustomerController controller = new CustomerController(c);
+
+            Customer customerToAdd = new Customer() { CName = "Dan", CAddress = "The Gables", Phone = "tWO" };
+
+            c.Customers.Add(customerToAdd);
+
+            ViewResult result = CustomerController.Details("Dan") as ViewResult;
+
+            var Customer = (CustomerController)result.ViewData.Model;
+
+            Assert.AreEqual(CustomerController.CName, "Dan");
+
+            Assert.AreEqual(CustomerController.CAddress, "The Gables");
 
         }
-
-        Assert.AreEqual(1, customers.Count);
-
-        }
-
-        //[TestMethod()]
-        //public void IndexTest()
-        //{
-        //    TestCustomersContext tdc = new TestCustomersContext();
-        //    var controller = new CustomerController(tdc);
-        //    var result = controller.Index("Customers");
-        //    Assert.IsNotNull(result);
-        //}
-        //[TestMethod()]
-        //public void IndexTest()
-        //{
-        //    TestCustomersContext tdc = new TestCustomersContext();
-        //    CustomerController controller = new CustomerController (tbc);
-        //    Customer customer = new Customer() { CName = "Bob" };
-
-        //    var result = controller.Create(cust);
-        //    Assert.IsNotNull(result);
     }
-
 }
+
 
 
 
