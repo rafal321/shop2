@@ -17,7 +17,7 @@ namespace shop2Tests2
         {
             TestCustomersContext C = new TestCustomersContext();
             CustomerController controller = new CustomerController(C);
-            Customer customerToCreate = new Customer() { CustomerID = 13, CName = "Bob", CAddress = "Tallaght", Phone = "four" };
+            Customer customerToCreate = new Customer() { CustomerID = 13, CName = "Bob", CAddress = "Tallaght", Phone = "08744458" };
 
             var result = controller.Create(customerToCreate) as RedirectToRouteResult;
 
@@ -39,7 +39,7 @@ namespace shop2Tests2
 
             c.Customers.Add(Customer1);
 
-            ViewResult result = controller.Index("", "Dublin") as ViewResult;
+            ViewResult result = CustomerController.Index("", "Dublin") as ViewResult;
 
             var customers = (List<Customer>)result.ViewData.Model;
 
@@ -54,29 +54,8 @@ namespace shop2Tests2
             Assert.AreEqual(1, customers.Count);
 
         }
-        [TestMethod()]
+       
 
-
-        public void DetailsTest()
-
-        {
-            TestCustomersContext c = new TestCustomersContext();
-
-            CustomerController controller = new CustomerController(c);
-
-            Customer customerToAdd = new Customer() { CName = "Dan", CAddress = "The Gables", Phone = "tWO" };
-
-            c.Customers.Add(customerToAdd);
-
-            ViewResult result = CustomerController.Details("Dan") as ViewResult;
-
-            var Customer = (CustomerController)result.ViewData.Model;
-
-            Assert.AreEqual(CustomerController.CName, "Dan");
-
-            Assert.AreEqual(CustomerController.CAddress, "The Gables");
-
-        }
     }
 }
 

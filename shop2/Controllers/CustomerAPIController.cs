@@ -9,94 +9,59 @@ using shop2.Models;
 
 namespace shop2.Controllers
 {
+    [RoutePrefix("shop2")]
     public class CustomerAPIController : ApiController
     {
         private shopdbEntities db = new shopdbEntities();
 
-        // GET: api/CustomerAPI
+        [Route("api/Customer/all")]
+        // GET: api/CustomerAPI = /shop2/api/Customer/all
         public List<Customer> Get()
         {
             db.Configuration.ProxyCreationEnabled = false;
-            return db.Customers.OrderByDescending(c => c.CName).ToList();
-
+            return db.Customers.OrderByDescending(x => x.CName).ToList();
         }
-        // GET: api/CustomerAPI/1
-        public Customer GetById(int id)
+
+        [Route("api/customer/ById/{id}")]
+        // GET: /shop2//api/customer/ById/2
+        public Customer Get(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;
-            return db.Customers.SingleOrDefault(c => c.CustomerID == id);
+            return db.Customers.SingleOrDefault(x => x.CustomerID == id);
         }
-        [Route("api/customerAPI/ByKeyword/{keyword}")]
-        public IHttpActionResult GetByKeyword(String keyword)
-        {
-            // return Customer Name and Customer Address for matches whole word only
-            var results = db.Customers.Where(c => c.CAddress.Contains(keyword)).Select(c => new { c.CName, c.CAddress });
 
-            if (results.Count() == 0)
+        [Route("api/customer/ByKeyword/{Keyword}")]
+        public IHttpActionResult GetAllcustomersByKeyword(string keyword)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            var result = db.Customers.Where(m => m.CName.Contains(keyword)).Select(m => new { m.CustomerID, m.CName });
+            if (result.Count() == 0)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(results);
+                return Ok(result);
             }
         }
-
-        [Route("api/customerAPI/Update/{id}")]
-
-        public HttpResponseMessage Put(int id, [FromBody]Customer value)
+        [Route("api/customer/New")]
+        // POST: api/Customer/New
+        public HttpResponseMessage Post([FromBody] Customer value)
         {
             if (value == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NoContent, "Failed to read input");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Failed to read Input");
             }
-
-            var record = db.Customers.SingleOrDefault(c => c.CustomerID == id);
-
-            if (record == null)
+            if (db.Customers.Count(p => p.CName.Equals(value.CName)) != 0)
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound, "Customer Not Found");
+                return Request.CreateResponse(HttpStatusCode.OK, "Customer" + value.CName + "Already exists in database.");
             }
-
-            try
-            {
-                record.CName = value.CName;
-                record.CAddress = value.CAddress;
-                record.Phone = value.Phone;
-                db.SaveChanges();
-                return Request.CreateResponse(HttpStatusCode.OK, "Record updated");
-            }
-            catch (Exception e)
-            {
-                return Request.CreateResponse(HttpStatusCode.ExpectationFailed, "Update operation failed with exception {0}", e.Message);
-            }
+            db.Customers.Add(value);
+            db.SaveChanges();
+            return Request.CreateResponse(HttpStatusCode.Created, "Customer " + value.CName + "added to database. ");
         }
-        [Route("api/CustomerAPI/Delete/{id}")]
-        // DELETE: api/CustomerAPI/Delete/1
-        public HttpResponseMessage Delete(int id)
-        {
-            using (CustomersContext db = new CustomersContext())
-            {
-                var record = db.Customers.FirstOrDefault(c => c.CustomerID == id);
 
-                if (record == null)
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Failed to find that Customer");
-                }
-
-                try
-                {
-                    db.Customers.Remove(record);
-                    db.SaveChanges();
-                    return Request.CreateResponse(HttpStatusCode.OK, "Record deleted");
-
-                }
-                catch (Exception e)
-                {
-                    return Request.CreateResponse(HttpStatusCode.ExpectationFailed, "DELETE operation failed with exception {0}", e.Message);
-                }
-            }
-        }
+       
 
     }
 }
